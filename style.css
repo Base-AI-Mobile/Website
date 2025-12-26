@@ -1,0 +1,249 @@
+/* =========================================
+   BASE VARIABLES & RESET
+   ========================================= */
+:root {
+  --apple-blue: #0071e3;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #ffffff;
+  --text-secondary: #86868b;
+  --bg-dark: #050507;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+}
+
+/* Sembunyikan scrollbar global */
+::-webkit-scrollbar { display: none; }
+body { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* =========================================
+   BACKGROUND SYSTEM
+   ========================================= */
+.bg-glow {
+  position: fixed; inset: 0;
+  background: 
+    radial-gradient(circle at 50% 0%, #1a2035 0%, transparent 60%),
+    radial-gradient(circle at 85% 90%, #101010 0%, transparent 50%);
+  z-index: -2;
+}
+
+.bg-texture {
+  position: fixed; inset: 0;
+  z-index: -1;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* =========================================
+   HEADER
+   ========================================= */
+.main-header {
+  position: fixed; top: 0; width: 100%; height: 56px;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 24px;
+  background: rgba(5, 5, 7, 0.75);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  z-index: 1000;
+}
+
+.brand-wrapper { display: flex; align-items: center; gap: 12px; }
+.brand-logo { width: 32px; height: 32px; animation: spin 20s linear infinite; }
+.brand-logo svg text { fill: #fff; font-size: 8.5px; font-weight: 600; letter-spacing: 1px; }
+.brand-name { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.5px; }
+
+.status-pill {
+  font-size: 0.7rem; background: rgba(255,255,255,0.06);
+  padding: 6px 12px; border-radius: 100px; 
+  border: 1px solid var(--glass-border);
+  display: flex; align-items: center; gap: 8px; color: #ccc;
+}
+.dot { width: 6px; height: 6px; background: #32d74b; border-radius: 50%; box-shadow: 0 0 8px rgba(50, 215, 75, 0.4); }
+
+/* =========================================
+   LAYOUT & HERO
+   ========================================= */
+.apple-container {
+  max-width: 900px; margin: 0 auto;
+  padding: 140px 24px 60px;
+  text-align: center;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem; font-weight: 600; color: var(--apple-blue);
+  background: rgba(0, 113, 227, 0.1);
+  padding: 6px 16px; border-radius: 20px;
+  margin-bottom: 24px; letter-spacing: 0.02em;
+  border: 1px solid rgba(0, 113, 227, 0.2);
+}
+
+.hero-title {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 700; line-height: 1.05; letter-spacing: -0.03em;
+  margin-bottom: 24px;
+  background: linear-gradient(180deg, #ffffff 20%, #666666 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-title .thin { 
+  font-weight: 300; color: #888; -webkit-text-fill-color: #888; 
+}
+
+.hero-subtitle {
+  font-size: 1.2rem; color: var(--text-secondary);
+  max-width: 580px; margin: 0 auto 40px; line-height: 1.5;
+}
+
+/* =========================================
+   INPUT FIELD (GLASS STYLE)
+   ========================================= */
+.input-wrapper {
+  margin-bottom: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.glass-input {
+  width: 100%;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 20px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 120px;
+  outline: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 20px rgba(0, 113, 227, 0.15);
+}
+
+.glass-input::placeholder { color: rgba(255, 255, 255, 0.3); }
+
+/* =========================================
+   BUTTON
+   ========================================= */
+.apple-btn {
+  background: #ffffff; color: #000000;
+  border: none; padding: 16px 36px; border-radius: 100px;
+  font-size: 1rem; font-weight: 600; cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 0 20px rgba(255,255,255,0.1);
+  position: relative; overflow: hidden;
+}
+
+.apple-btn:hover { 
+  transform: scale(1.03); box-shadow: 0 0 40px rgba(255,255,255,0.3);
+}
+.apple-btn:active { transform: scale(0.98); }
+
+/* =========================================
+   BENTO GLASS CARD
+   ========================================= */
+.glass-bento { margin-top: 60px; perspective: 1000px; }
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid var(--glass-border);
+  border-radius: 32px; padding: 40px;
+  text-align: left; position: relative;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+  min-height: 100px;
+}
+
+/* Reflection Effect */
+.glass-card::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.05) 45%, transparent 50%);
+  transform: translateX(-150%); transition: 0.8s ease;
+  pointer-events: none;
+}
+.glass-card:hover::before { transform: translateX(150%); }
+
+/* AI Output Styles */
+.ai-status { margin-bottom: 20px; }
+.ai-line { 
+  color: var(--apple-blue); font-family: 'SF Mono', monospace; 
+  font-size: 0.8rem; margin-bottom: 8px; opacity: 0; 
+}
+body.ai-running .ai-line { animation: slideIn 0.4s forwards; }
+body.ai-running .ai-line:nth-child(2) { animation-delay: 0.5s; }
+body.ai-running .ai-line:nth-child(3) { animation-delay: 1.0s; }
+
+.result-header { 
+  display: flex; align-items: center; gap: 10px; margin-bottom: 15px; 
+  border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; 
+}
+.sparkle { color: #FFD700; font-size: 1.2rem; }
+.ai-result h3 { font-size: 0.9rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #fff; }
+
+.ai-result { display: none; }
+body.ai-done .ai-result { display: block; animation: fadeUp 0.8s ease; }
+body.ai-done .ai-status { display: none; }
+
+.ai-result p { 
+  font-size: 1.1rem; line-height: 1.6; color: #e5e5e5; font-weight: 400; 
+}
+.ai-result p::after {
+  content: ""; display: inline-block; width: 2px; height: 1em;
+  background: var(--apple-blue); margin-left: 4px; vertical-align: middle;
+  animation: blink 1s infinite;
+}
+
+.card-footer { 
+  margin-top: 30px; font-size: 0.7rem; color: #555; 
+  text-align: center; text-transform: uppercase; letter-spacing: 1px; 
+}
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+.reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* =========================================
+   MOBILE RESPONSIVE
+   ========================================= */
+@media (max-width: 768px) {
+  .hero-title { font-size: 3rem; }
+  .hero-subtitle { font-size: 1.1rem; }
+  .apple-container { padding-top: 110px; }
+  
+  .glass-card { padding: 20px; }
+  .ai-result h3 { font-size: 0.8rem; }
+  .ai-result p { font-size: 0.95rem; line-height: 1.5; }
+  .card-footer { font-size: 0.65rem; margin-top: 20px; }
+
+  .bg-glow { background: radial-gradient(circle at 50% 20%, #1a2035 0%, transparent 70%); }
+}
