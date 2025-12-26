@@ -63,11 +63,9 @@
   </main>
 
   <script>
-    // --- KONFIGURASI API ---
-    // Masukkan Key anda di sini (Pastikan tiada space kosong)
-    const API_KEY = "AIzaSyDQWTNvEHVNBcobAmv4FVQvvow2UBGm3O8"; 
+    // ⚠️ GANTIKAN DENGAN KEY BARU ANDA (YANG LAMA DAH BOCOR)
+    const API_KEY = "AIzaSyCThbEiojl-LcvL_QT44RTf7toJDdwi9XQ"; 
 
-    // Reveal Animation
     function reveal() {
       var reveals = document.querySelectorAll(".reveal");
       reveals.forEach((element) => {
@@ -81,7 +79,6 @@
     window.addEventListener("scroll", reveal);
     document.addEventListener("DOMContentLoaded", reveal);
 
-    // --- LOGIK AI GEMINI ---
     async function startAI() {
       const inputField = document.getElementById("userInput");
       const userText = inputField.value.trim();
@@ -93,15 +90,14 @@
         return;
       }
       
-      // UI Loading
       card.style.borderColor = "rgba(0, 113, 227, 0.6)";
       document.body.classList.add("ai-running");
-      outputContainer.innerHTML = "Sedang menghubungi Google Gemini..."; 
+      document.body.classList.remove("ai-done"); // Reset status
+      outputContainer.innerHTML = ""; 
 
       try {
-        console.log("Menggunakan API Key:", API_KEY); // Check console (F12) tengok key betul tak
-
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`, {
+        // Guna model 'gemini-1.5-flash' (Paling stabil untuk Free Tier)
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -109,25 +105,26 @@
           })
         });
 
-        // Cek status error
         if (!response.ok) {
            const errorData = await response.json();
-           throw new Error(`Error ${response.status}: ${errorData.error.message}`);
+           console.error("API Error:", errorData);
+           throw new Error(`Google Error (${response.status}): ${errorData.error.message}`);
         }
 
         const data = await response.json();
         const aiSummary = data.candidates[0].content.parts[0].text;
 
-        // Berjaya!
         document.body.classList.remove("ai-running");
+        document.body.classList.add("ai-done");
         card.style.borderColor = "rgba(255, 255, 255, 0.1)";
+        
         typeWriter(outputContainer, aiSummary, 0);
 
       } catch (error) {
         console.error("ERROR PENUH:", error);
         document.body.classList.remove("ai-running");
-        // Tunjuk error sebenar di skrin
-        outputContainer.innerHTML = `⚠️ GAGAL: ${error.message}`;
+        document.body.classList.add("ai-done");
+        outputContainer.innerHTML = `<span style="color:#ff4444">⚠️ GAGAL: ${error.message}</span>`;
       }
     }
 
